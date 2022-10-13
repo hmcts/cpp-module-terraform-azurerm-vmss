@@ -4,6 +4,12 @@ variable "resource_group_name" {
   description = "Resource Group Name"
 }
 
+variable "environment" {
+  type        = string
+  default     = ""
+  description = "Environment name"
+}
+
 variable "network_security_group_id" {
   type        = string
   default     = ""

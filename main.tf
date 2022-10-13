@@ -15,21 +15,21 @@ resource "random_password" "passwd" {
 
 resource "azurerm_key_vault_secret" "ssh_public_key" {
   count        = var.generate_admin_ssh_key == true ? 1 : 0
-  name         = "ado--cpp-module-terraform-azurerm-vmss--mdv--vmss-ssh-public-key"
+  name         = "ado--cpp-module-terraform-azurerm-vmss--${var.environment}--vmss-ssh-public-key"
   value        = tls_private_key.rsa[0].public_key_openssh
   key_vault_id = var.key_vault_id
 }
 
 resource "azurerm_key_vault_secret" "ssh_private_key" {
   count        = var.generate_admin_ssh_key == true ? 1 : 0
-  name         = "ado--cpp-module-terraform-azurerm-vmss--mdv--vmss-ssh-private-key"
+  name         = "ado--cpp-module-terraform-azurerm-vmss--${var.environment}--vmss-ssh-private-key"
   value        = tls_private_key.rsa[0].private_key_pem
   key_vault_id = var.key_vault_id
 }
 
 resource "azurerm_key_vault_secret" "password" {
   count        = var.disable_password_authentication != true && var.admin_password == null ? 1 : 0
-  name         = "ado--cpp-module-terraform-azurerm-vmss--mdv--vmss-admin-password"
+  name         = "ado--cpp-module-terraform-azurerm-vmss--${var.environment}--vmss-admin-password"
   value        = random_password.passwd[0].result
   key_vault_id = var.key_vault_id
 }

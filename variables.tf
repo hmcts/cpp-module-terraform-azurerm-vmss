@@ -146,7 +146,7 @@ variable "grace_period" {
 
 variable "source_image_id" {
   description = "The ID of an Image which each Virtual Machine in this Scale Set should be based on"
-  default     = null
+  default     = "test"
 }
 
 variable "custom_image" {
@@ -157,7 +157,14 @@ variable "custom_image" {
     sku       = string
     version   = string
   })
-  default = null
+  default = {
+    centos8 = {
+      publisher = "OpenLogic"
+      offer     = "CentOS"
+      sku       = "8.0"
+      version   = "latest"
+    }
+  }
 }
 
 variable "linux_distribution_list" {

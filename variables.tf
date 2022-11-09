@@ -78,9 +78,10 @@ variable "nat_pool_frontend_ports" {
   default     = [50000, 50119]
 }
 
-variable "load_balancer_health_probe_port" {
+variable "load_balancer_health_probe_port_list" {
   description = "Port on which the Probe queries the backend endpoint. Default `80`"
-  default     = 80
+  type        = list(number)
+  default     = [80]
 }
 
 variable "load_balanced_port_list" {

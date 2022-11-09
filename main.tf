@@ -122,6 +122,15 @@ resource "azurerm_linux_virtual_machine_scale_set" "linux_vmss" {
     }
   }
 
+  dynamic "plan" {
+    for_each = var.isImageFromMarketPlace ? [1] : []
+    content {
+      name      = var.custom_image["sku"]
+      publisher = var.custom_image["publisher"]
+      product   = var.custom_image["offer"]
+    }
+  }
+
   os_disk {
     storage_account_type = var.os_disk_storage_account_type
     caching              = "ReadWrite"

@@ -125,6 +125,11 @@ variable "single_placement_group" {
   default     = false
 }
 
+variable "isImageFromMarketPlace" {
+  description = "is image from market place. this will include plan block"
+  default     = true
+}
+
 variable "license_type" {
   description = "Specifies the type of on-premise license which should be used for this Virtual Machine. Possible values are None, Windows_Client and Windows_Server."
   default     = "None"

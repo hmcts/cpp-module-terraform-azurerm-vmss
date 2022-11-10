@@ -90,6 +90,10 @@ variable "load_balanced_port_list" {
     frontend_port = number
     backend_port  = number
   }))
+  default = [{
+    frontend_port = 80
+    backend_port  = 80
+  }]
 }
 
 variable "overprovision" {

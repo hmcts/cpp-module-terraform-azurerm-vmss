@@ -86,8 +86,10 @@ variable "load_balancer_health_probe_port_list" {
 
 variable "load_balanced_port_list" {
   description = "List of ports to be forwarded through the load balancer to the VMs"
-  type        = list(number)
-  default     = []
+  type        = list(object({
+    frontend_port = number
+    backend_port  = number
+  }))
 }
 
 variable "overprovision" {

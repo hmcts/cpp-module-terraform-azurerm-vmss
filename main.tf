@@ -82,8 +82,8 @@ resource "azurerm_lb_rule" "lbrule" {
   loadbalancer_id                = azurerm_lb.vmsslb[0].id
   probe_id                       = azurerm_lb_probe.lbp[count.index].id
   protocol                       = "Tcp"
-  frontend_port                  = tostring(var.load_balanced_port_list[count.index])
-  backend_port                   = tostring(var.load_balanced_port_list[count.index])
+  frontend_port                  = tostring(var.load_balanced_port_list[count.index]["frontend_port"])
+  backend_port                   = tostring(var.load_balanced_port_list[count.index]["backend_port"])
   frontend_ip_configuration_name = azurerm_lb.vmsslb[0].frontend_ip_configuration.0.name
   backend_address_pool_ids       = [azurerm_lb_backend_address_pool.bepool[0].id]
 }

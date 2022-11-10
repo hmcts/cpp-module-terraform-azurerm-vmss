@@ -78,15 +78,22 @@ variable "nat_pool_frontend_ports" {
   default     = [50000, 50119]
 }
 
-variable "load_balancer_health_probe_port" {
+variable "load_balancer_health_probe_port_list" {
   description = "Port on which the Probe queries the backend endpoint. Default `80`"
-  default     = 80
+  type        = list(number)
+  default     = [80]
 }
 
 variable "load_balanced_port_list" {
   description = "List of ports to be forwarded through the load balancer to the VMs"
-  type        = list(number)
-  default     = []
+  type = list(object({
+    frontend_port = number
+    backend_port  = number
+  }))
+  default = [{
+    frontend_port = 80
+    backend_port  = 80
+  }]
 }
 
 variable "overprovision" {
@@ -122,6 +129,11 @@ variable "availability_zone_balance" {
 variable "single_placement_group" {
   description = "Allow to have cluster of 100 VMs only"
   default     = false
+}
+
+variable "isImageFromMarketPlace" {
+  description = "is image from market place. this will include plan block"
+  default     = true
 }
 
 variable "license_type" {

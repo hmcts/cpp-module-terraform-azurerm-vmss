@@ -70,20 +70,20 @@ resource "azurerm_lb_nat_pool" "natpol" {
 }
 
 resource "azurerm_lb_probe" "lbp" {
-  count           = var.enable_load_balancer ? 1 : 0
-  name            = lower("lb-probe-port-${var.load_balancer_health_probe_port}-${var.vmscaleset_name}")
-  loadbalancer_id = azurerm_lb.vmsslb[count.index].id
-  port            = var.load_balancer_health_probe_port
+  count           = var.enable_load_balancer ? length(var.load_balancer_health_probe_port_list) : 0
+  name            = lower("lb-probe-port-${var.load_balancer_health_probe_port_list[count.index]}-${var.vmscaleset_name}")
+  loadbalancer_id = azurerm_lb.vmsslb[0].id
+  port            = var.load_balancer_health_probe_port_list[count.index]
 }
 
 resource "azurerm_lb_rule" "lbrule" {
   count                          = var.enable_load_balancer ? length(var.load_balanced_port_list) : 0
   name                           = format("%s-%02d-rule", var.vmscaleset_name, count.index + 1)
   loadbalancer_id                = azurerm_lb.vmsslb[0].id
-  probe_id                       = azurerm_lb_probe.lbp[0].id
+  probe_id                       = azurerm_lb_probe.lbp[count.index].id
   protocol                       = "Tcp"
-  frontend_port                  = tostring(var.load_balanced_port_list[count.index])
-  backend_port                   = tostring(var.load_balanced_port_list[count.index])
+  frontend_port                  = tostring(var.load_balanced_port_list[count.index]["frontend_port"])
+  backend_port                   = tostring(var.load_balanced_port_list[count.index]["backend_port"])
   frontend_ip_configuration_name = azurerm_lb.vmsslb[0].frontend_ip_configuration.0.name
   backend_address_pool_ids       = [azurerm_lb_backend_address_pool.bepool[0].id]
 }
@@ -119,6 +119,15 @@ resource "azurerm_linux_virtual_machine_scale_set" "linux_vmss" {
       offer     = var.custom_image != null ? var.custom_image["offer"] : var.linux_distribution_list[lower(var.linux_distribution_name)]["offer"]
       sku       = var.custom_image != null ? var.custom_image["sku"] : var.linux_distribution_list[lower(var.linux_distribution_name)]["sku"]
       version   = var.custom_image != null ? var.custom_image["version"] : var.linux_distribution_list[lower(var.linux_distribution_name)]["version"]
+    }
+  }
+
+  dynamic "plan" {
+    for_each = var.isImageFromMarketPlace ? [1] : []
+    content {
+      name      = var.custom_image["sku"]
+      publisher = var.custom_image["publisher"]
+      product   = var.custom_image["offer"]
     }
   }
 

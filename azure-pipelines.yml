@@ -8,6 +8,7 @@ resources:
   - repository: cppAzureDevOpsTemplates
     type: github
     name: hmcts/cpp-azure-devops-templates
+    ref: 'dev/EI-921'
     endpoint: 'cpp-apps'
 
 extends:

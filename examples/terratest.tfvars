@@ -16,6 +16,7 @@ key_vault_config = {
 vmss_config = {
   name                    = "tftestvmss"
   linux_distribution_name = "ubuntu1804"
+  source_image_id         = "/subscriptions/e6b5053b-4c38-4475-a835-a025aeb3d8c7/resourceGroups/RG-ADO-AMI/providers/Microsoft.Compute/images/cpp-centos8.5-packer-adoAMI"
 }
 
 tags = {

@@ -18,6 +18,7 @@ resource "azurerm_key_vault_secret" "ssh_public_key" {
   name         = "ado--cpp-module-terraform-azurerm-vmss--${var.environment}--vmss-ssh-public-key"
   value        = tls_private_key.rsa[0].public_key_openssh
   key_vault_id = var.key_vault_id
+  tags         = var.tags
 }
 
 resource "azurerm_key_vault_secret" "ssh_private_key" {
@@ -25,6 +26,7 @@ resource "azurerm_key_vault_secret" "ssh_private_key" {
   name         = "ado--cpp-module-terraform-azurerm-vmss--${var.environment}--vmss-ssh-private-key"
   value        = tls_private_key.rsa[0].private_key_pem
   key_vault_id = var.key_vault_id
+  tags         = var.tags
 }
 
 resource "azurerm_key_vault_secret" "password" {
@@ -32,6 +34,7 @@ resource "azurerm_key_vault_secret" "password" {
   name         = "ado--cpp-module-terraform-azurerm-vmss--${var.environment}--vmss-admin-password"
   value        = random_password.passwd[0].result
   key_vault_id = var.key_vault_id
+  tags         = var.tags
 }
 
 resource "azurerm_lb" "vmsslb" {
@@ -224,6 +227,7 @@ resource "azurerm_monitor_autoscale_setting" "auto" {
       }
     }
   }
+  tags         = var.tags
 }
 
 resource "azurerm_monitor_diagnostic_setting" "vmmsdiag" {

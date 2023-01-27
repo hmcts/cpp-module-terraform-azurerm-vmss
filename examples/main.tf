@@ -49,6 +49,8 @@ module "vmss" {
   key_vault_id              = data.azurerm_key_vault.key_vault.id
   vmscaleset_name           = var.vmss_config.name
   linux_distribution_name   = var.vmss_config.linux_distribution_name
+  source_image_id           = var.vmss_config.source_image_id
+  isImageFromMarketPlace    = false
   generate_admin_ssh_key    = true
   instances_count           = 1
   enable_load_balancer      = false

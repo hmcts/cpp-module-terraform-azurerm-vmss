@@ -133,7 +133,7 @@ variable "single_placement_group" {
 
 variable "isImageFromMarketPlace" {
   description = "is image from market place. this will include plan block"
-  default     = true
+  default     = false
 }
 
 variable "license_type" {
@@ -158,7 +158,7 @@ variable "grace_period" {
 
 variable "source_image_id" {
   description = "The ID of an Image which each Virtual Machine in this Scale Set should be based on"
-  default     = null
+  default     = "test"
 }
 
 variable "custom_image" {

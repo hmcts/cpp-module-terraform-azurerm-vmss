@@ -5,9 +5,9 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | n/a |
-| <a name="provider_random"></a> [random](#provider\_random) | n/a |
-| <a name="provider_tls"></a> [tls](#provider\_tls) | n/a |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.56.0 |
+| <a name="provider_random"></a> [random](#provider\_random) | 3.5.1 |
+| <a name="provider_tls"></a> [tls](#provider\_tls) | 4.0.4 |
 
 ## Resources
 
@@ -83,6 +83,7 @@
 | <a name="input_storage_account_id"></a> [storage\_account\_id](#input\_storage\_account\_id) | Storage account ID | `string` | `null` | no |
 | <a name="input_subnet_id"></a> [subnet\_id](#input\_subnet\_id) | Subnet ID | `string` | `""` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to add to all resources | `map(string)` | `{}` | no |
+| <a name="input_user_data"></a> [user\_data](#input\_user\_data) | The User Data which should be used for the Virtual Machine Scale Set | `any` | `null` | no |
 | <a name="input_virtual_machine_size"></a> [virtual\_machine\_size](#input\_virtual\_machine\_size) | The Virtual Machine SKU for the Scale Set, Default is Standard\_A2\_V2 | `string` | `"Standard_D2_v3"` | no |
 | <a name="input_vmscaleset_name"></a> [vmscaleset\_name](#input\_vmscaleset\_name) | Specifies the name of the virtual machine scale set resource | `string` | `""` | no |
 

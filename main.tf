@@ -106,6 +106,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "linux_vmss" {
   health_probe_id                 = var.enable_load_balancer ? azurerm_lb_probe.lbp[0].id : null
   provision_vm_agent              = true
   disable_password_authentication = var.disable_password_authentication
+  user_data                       = var.user_data != null ? base64encode(var.user_data) : null
 
   admin_ssh_key {
     username   = var.admin_username

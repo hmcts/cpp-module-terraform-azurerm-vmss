@@ -318,6 +318,11 @@ variable "nsg_diag_logs" {
   default     = ["NetworkSecurityGroupEvent", "NetworkSecurityGroupRuleCounter"]
 }
 
+variable "user_data" {
+  description = "The User Data which should be used for the Virtual Machine Scale Set"
+  default     = null
+}
+
 variable "tags" {
   description = "A map of tags to add to all resources"
   type        = map(string)

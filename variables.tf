@@ -318,8 +318,8 @@ variable "nsg_diag_logs" {
   default     = ["NetworkSecurityGroupEvent", "NetworkSecurityGroupRuleCounter"]
 }
 
-variable "user_data" {
-  description = "The User Data which should be used for the Virtual Machine Scale Set"
+variable "custom_data" {
+  description = "The Custom Data which should be used for the Virtual Machine Scale Set"
   default     = null
 }
 

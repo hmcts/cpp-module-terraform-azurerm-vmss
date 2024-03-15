@@ -295,7 +295,7 @@ variable "minimum_instances_count" {
 
 variable "maximum_instances_count" {
   description = "The maximum number of instances for this resource. Valid values are between 0 and 1000"
-  default     = ""
+  default     = 2
 }
 
 variable "scale_out_cpu_percentage_threshold" {

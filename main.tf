@@ -34,6 +34,15 @@ resource "azurerm_key_vault_secret" "password" {
   key_vault_id = var.key_vault_id
 }
 
+resource "azurerm_public_ip" "vmss_lb_public_ip" {
+  count               = var.load_balancer_type == "public" ? 1 : 0
+  name                = lower("pip-lb-${var.vmscaleset_name}-${var.location}")
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  allocation_method   = "Static"
+  sku                 = "Standard"
+}
+
 resource "azurerm_lb" "vmsslb" {
   count               = var.enable_load_balancer ? 1 : 0
   name                = lower("lbint-${var.vmscaleset_name}-${var.location}")
@@ -44,7 +53,7 @@ resource "azurerm_lb" "vmsslb" {
 
   frontend_ip_configuration {
     name                          = lower("lbint-frontend-${var.vmscaleset_name}")
-    public_ip_address_id          = null
+    public_ip_address_id          = var.load_balancer_type == "public" ? azurerm_public_ip.vmss_lb_public_ip[0].id : null
     private_ip_address_allocation = var.load_balancer_type == "private" ? var.private_ip_address_allocation : null
     private_ip_address            = var.load_balancer_type == "private" && var.private_ip_address_allocation == "Static" ? var.lb_private_ip_address : null
     subnet_id                     = var.load_balancer_type == "private" ? var.subnet_id : null

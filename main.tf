@@ -89,13 +89,26 @@ resource "azurerm_lb_rule" "lbrule" {
   count                          = var.enable_load_balancer ? length(var.load_balanced_port_list) : 0
   name                           = format("%s-%02d-rule", var.vmscaleset_name, count.index + 1)
   loadbalancer_id                = azurerm_lb.vmsslb[0].id
-  probe_id                       = azurerm_lb_probe.lbp[count.index].id
+  probe_id                       = azurerm_lb_probe.lbp[0].id
   protocol                       = var.load_balanced_port_list[count.index]["protocol"]
   frontend_port                  = tostring(var.load_balanced_port_list[count.index]["frontend_port"])
   backend_port                   = tostring(var.load_balanced_port_list[count.index]["backend_port"])
   frontend_ip_configuration_name = azurerm_lb.vmsslb[0].frontend_ip_configuration.0.name
   backend_address_pool_ids       = [azurerm_lb_backend_address_pool.bepool[0].id]
 }
+
+#resource "azurerm_lb_rule" "lbrule" {
+#  count                          = var.enable_load_balancer ? length(var.load_balanced_port_list) : 0
+#  name                           = format("%s-%02d-rule", var.vmscaleset_name, count.index + 1)
+#  loadbalancer_id                = azurerm_lb.vmsslb[0].id
+#  probe_id                       = azurerm_lb_probe.lbp[0].id
+#  protocol                       = var.load_balanced_port_list[count.index].protocol
+#  frontend_port                  = var.load_balanced_port_list[count.index].frontend_port
+#  backend_port                   = var.load_balanced_port_list[count.index].backend_port
+#  frontend_ip_configuration_name = azurerm_lb.vmsslb[0].frontend_ip_configuration[0].name
+#  backend_address_pool_ids       = [azurerm_lb_backend_address_pool.bepool[0].id]
+#}
+
 
 resource "azurerm_linux_virtual_machine_scale_set" "linux_vmss" {
   name                            = var.vmscaleset_name

@@ -25,6 +25,7 @@
 | [azurerm_monitor_autoscale_setting.auto](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_diagnostic_setting.nsg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_diagnostic_setting) | resource |
 | [azurerm_monitor_diagnostic_setting.vmmsdiag](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_diagnostic_setting) | resource |
+| [azurerm_public_ip.vmss_lb_public_ip](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/public_ip) | resource |
 | [random_password.passwd](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
 | [tls_private_key.rsa](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key) | resource |
 
@@ -59,7 +60,7 @@
 | <a name="input_license_type"></a> [license\_type](#input\_license\_type) | Specifies the type of on-premise license which should be used for this Virtual Machine. Possible values are None, Windows\_Client and Windows\_Server. | `string` | `"None"` | no |
 | <a name="input_linux_distribution_list"></a> [linux\_distribution\_list](#input\_linux\_distribution\_list) | n/a | <pre>map(object({<br>    publisher = string<br>    offer     = string<br>    sku       = string<br>    version   = string<br>  }))</pre> | <pre>{<br>  "centos8": {<br>    "offer": "CentOS",<br>    "publisher": "OpenLogic",<br>    "sku": "7.5",<br>    "version": "latest"<br>  },<br>  "coreos": {<br>    "offer": "CoreOS",<br>    "publisher": "CoreOS",<br>    "sku": "Stable",<br>    "version": "latest"<br>  },<br>  "ubuntu1604": {<br>    "offer": "UbuntuServer",<br>    "publisher": "Canonical",<br>    "sku": "16.04-LTS",<br>    "version": "latest"<br>  },<br>  "ubuntu1804": {<br>    "offer": "UbuntuServer",<br>    "publisher": "Canonical",<br>    "sku": "18.04-LTS",<br>    "version": "latest"<br>  }<br>}</pre> | no |
 | <a name="input_linux_distribution_name"></a> [linux\_distribution\_name](#input\_linux\_distribution\_name) | Variable to pick an OS flavour for Linux based VMSS possible values include: centos8, ubuntu1804 | `string` | `"ubuntu1804"` | no |
-| <a name="input_load_balanced_port_list"></a> [load\_balanced\_port\_list](#input\_load\_balanced\_port\_list) | List of ports to be forwarded through the load balancer to the VMs | <pre>list(object({<br>    frontend_port = number<br>    backend_port  = number<br>  }))</pre> | <pre>[<br>  {<br>    "backend_port": 80,<br>    "frontend_port": 80<br>  }<br>]</pre> | no |
+| <a name="input_load_balanced_port_list"></a> [load\_balanced\_port\_list](#input\_load\_balanced\_port\_list) | List of ports to be forwarded through the load balancer to the VMs | <pre>list(object({<br>    frontend_port = number<br>    backend_port  = number<br>    protocol      = string<br>  }))</pre> | <pre>[<br>  {<br>    "backend_port": 80,<br>    "frontend_port": 80,<br>    "protocol": "Tcp"<br>  }<br>]</pre> | no |
 | <a name="input_load_balancer_health_probe_port_list"></a> [load\_balancer\_health\_probe\_port\_list](#input\_load\_balancer\_health\_probe\_port\_list) | Port on which the Probe queries the backend endpoint. Default `80` | `list(number)` | <pre>[<br>  80<br>]</pre> | no |
 | <a name="input_load_balancer_sku"></a> [load\_balancer\_sku](#input\_load\_balancer\_sku) | The SKU of the Azure Load Balancer. Accepted values are Basic and Standard. | `string` | `"Standard"` | no |
 | <a name="input_load_balancer_type"></a> [load\_balancer\_type](#input\_load\_balancer\_type) | Controls the type of load balancer should be created. Possible values are public and private | `string` | `"private"` | no |
@@ -98,5 +99,6 @@
 | <a name="output_load_balancer_health_probe_id"></a> [load\_balancer\_health\_probe\_id](#output\_load\_balancer\_health\_probe\_id) | The resource ID of the Load Balancer health Probe. |
 | <a name="output_load_balancer_nat_pool_id"></a> [load\_balancer\_nat\_pool\_id](#output\_load\_balancer\_nat\_pool\_id) | The resource ID of the Load Balancer NAT pool. |
 | <a name="output_load_balancer_private_ip"></a> [load\_balancer\_private\_ip](#output\_load\_balancer\_private\_ip) | The Private IP address allocated for load balancer |
+| <a name="output_load_balancer_public_ip"></a> [load\_balancer\_public\_ip](#output\_load\_balancer\_public\_ip) | n/a |
 | <a name="output_load_balancer_rules_id"></a> [load\_balancer\_rules\_id](#output\_load\_balancer\_rules\_id) | The resource ID of the Load Balancer Rule |
 <!-- END_TF_DOCS -->

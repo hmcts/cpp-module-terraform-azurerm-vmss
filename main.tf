@@ -90,7 +90,7 @@ resource "azurerm_lb_rule" "lbrule" {
   name                           = format("%s-%02d-rule", var.vmscaleset_name, count.index + 1)
   loadbalancer_id                = azurerm_lb.vmsslb[0].id
   probe_id                       = azurerm_lb_probe.lbp[count.index].id
-  protocol                       = "Tcp"
+  protocol                       = var.load_balanced_port_list[count.index]["protocol"]
   frontend_port                  = tostring(var.load_balanced_port_list[count.index]["frontend_port"])
   backend_port                   = tostring(var.load_balanced_port_list[count.index]["backend_port"])
   frontend_ip_configuration_name = azurerm_lb.vmsslb[0].frontend_ip_configuration.0.name

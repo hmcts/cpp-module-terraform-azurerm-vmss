@@ -37,3 +37,7 @@ output "linux_virtual_machine_scale_set_unique_id" {
   description = "The unique ID of the Linux Virtual Machine Scale Set."
   value       = element(concat(azurerm_linux_virtual_machine_scale_set.linux_vmss.*.unique_id, [""]), 0)
 }
+
+output "load_balancer_public_ip" {
+  value = var.load_balancer_type == "public" ? (azurerm_public_ip.vmss_lb_public_ip[0].ip_address) : "Not applicable for private load balancers"
+}

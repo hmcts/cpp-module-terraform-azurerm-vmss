@@ -89,10 +89,12 @@ variable "load_balanced_port_list" {
   type = list(object({
     frontend_port = number
     backend_port  = number
+    protocol      = string
   }))
   default = [{
     frontend_port = 80
     backend_port  = 80
+    protocol      = "Tcp" # Tcp, Udp or All
   }]
 }
 

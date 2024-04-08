@@ -34,6 +34,15 @@ resource "azurerm_key_vault_secret" "password" {
   key_vault_id = var.key_vault_id
 }
 
+resource "azurerm_public_ip" "vmss_lb_public_ip" {
+  count               = var.load_balancer_type == "public" ? 1 : 0
+  name                = lower("pip-lb-${var.vmscaleset_name}-${var.location}")
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  allocation_method   = "Static"
+  sku                 = "Standard"
+}
+
 resource "azurerm_lb" "vmsslb" {
   count               = var.enable_load_balancer ? 1 : 0
   name                = lower("lbint-${var.vmscaleset_name}-${var.location}")
@@ -44,7 +53,7 @@ resource "azurerm_lb" "vmsslb" {
 
   frontend_ip_configuration {
     name                          = lower("lbint-frontend-${var.vmscaleset_name}")
-    public_ip_address_id          = null
+    public_ip_address_id          = var.load_balancer_type == "public" ? azurerm_public_ip.vmss_lb_public_ip[0].id : null
     private_ip_address_allocation = var.load_balancer_type == "private" ? var.private_ip_address_allocation : null
     private_ip_address            = var.load_balancer_type == "private" && var.private_ip_address_allocation == "Static" ? var.lb_private_ip_address : null
     subnet_id                     = var.load_balancer_type == "private" ? var.subnet_id : null
@@ -80,13 +89,26 @@ resource "azurerm_lb_rule" "lbrule" {
   count                          = var.enable_load_balancer ? length(var.load_balanced_port_list) : 0
   name                           = format("%s-%02d-rule", var.vmscaleset_name, count.index + 1)
   loadbalancer_id                = azurerm_lb.vmsslb[0].id
-  probe_id                       = azurerm_lb_probe.lbp[count.index].id
-  protocol                       = "Tcp"
+  probe_id                       = azurerm_lb_probe.lbp[0].id
+  protocol                       = var.load_balanced_port_list[count.index]["protocol"]
   frontend_port                  = tostring(var.load_balanced_port_list[count.index]["frontend_port"])
   backend_port                   = tostring(var.load_balanced_port_list[count.index]["backend_port"])
   frontend_ip_configuration_name = azurerm_lb.vmsslb[0].frontend_ip_configuration.0.name
   backend_address_pool_ids       = [azurerm_lb_backend_address_pool.bepool[0].id]
 }
+
+#resource "azurerm_lb_rule" "lbrule" {
+#  count                          = var.enable_load_balancer ? length(var.load_balanced_port_list) : 0
+#  name                           = format("%s-%02d-rule", var.vmscaleset_name, count.index + 1)
+#  loadbalancer_id                = azurerm_lb.vmsslb[0].id
+#  probe_id                       = azurerm_lb_probe.lbp[0].id
+#  protocol                       = var.load_balanced_port_list[count.index].protocol
+#  frontend_port                  = var.load_balanced_port_list[count.index].frontend_port
+#  backend_port                   = var.load_balanced_port_list[count.index].backend_port
+#  frontend_ip_configuration_name = azurerm_lb.vmsslb[0].frontend_ip_configuration[0].name
+#  backend_address_pool_ids       = [azurerm_lb_backend_address_pool.bepool[0].id]
+#}
+
 
 resource "azurerm_linux_virtual_machine_scale_set" "linux_vmss" {
   name                            = var.vmscaleset_name
@@ -135,6 +157,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "linux_vmss" {
   os_disk {
     storage_account_type = var.os_disk_storage_account_type
     caching              = "ReadWrite"
+    disk_size_gb         = var.os_disk_size_gb
   }
 
   dynamic "data_disk" {

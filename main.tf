@@ -170,6 +170,14 @@ resource "azurerm_linux_virtual_machine_scale_set" "linux_vmss" {
     }
   }
 
+  dynamic "identity" {
+    for_each = var.identity == {} ? [] : [1]
+    content {
+      type         = var.identity["type"]
+      identity_ids = var.identity["identity_ids"]
+    }
+  }
+
   network_interface {
     name                          = lower("nic-${var.vmscaleset_name}")
     primary                       = true

@@ -330,3 +330,9 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "identity" {
+  description = "list of identity"
+  type        = any
+  default     = {}
+}

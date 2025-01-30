@@ -41,21 +41,21 @@ data "azurerm_key_vault" "key_vault" {
 }
 
 module "vmss" {
-  source                    = "../"
-  resource_group_name       = azurerm_resource_group.vmss.name
-  location                  = var.location
-  subnet_id                 = azurerm_subnet.vmss.id
-  network_security_group_id = azurerm_network_security_group.vmss.id
-  key_vault_id              = data.azurerm_key_vault.key_vault.id
-  vmscaleset_name           = var.vmss_config.name
-  linux_distribution_name   = var.vmss_config.linux_distribution_name
-  source_image_id           = var.vmss_config.source_image_id
-  isImageFromMarketPlace    = false
-  generate_admin_ssh_key    = true
-  instances_count           = 1
-  enable_load_balancer      = false
-  enable_autoscale_for_vmss = false
+  source                           = "../"
+  resource_group_name              = azurerm_resource_group.vmss.name
+  location                         = var.location
+  subnet_id                        = azurerm_subnet.vmss.id
+  network_security_group_id        = azurerm_network_security_group.vmss.id
+  key_vault_id                     = data.azurerm_key_vault.key_vault.id
+  vmscaleset_name                  = var.vmss_config.name
+  linux_distribution_name          = var.vmss_config.linux_distribution_name
+  source_image_id                  = var.vmss_config.source_image_id
+  isImageFromMarketPlace           = false
+  generate_admin_ssh_key           = true
+  instances_count                  = 1
+  enable_load_balancer             = false
+  enable_autoscale_for_vmss        = false
   enable_automatic_instance_repair = false
-  virtual_machine_size      = var.virtual_machine_size
-  tags                      = var.tags
+  virtual_machine_size             = var.virtual_machine_size
+  tags                             = var.tags
 }

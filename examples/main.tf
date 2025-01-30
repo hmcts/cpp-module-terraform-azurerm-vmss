@@ -55,5 +55,6 @@ module "vmss" {
   instances_count           = 1
   enable_load_balancer      = false
   enable_autoscale_for_vmss = false
+  virtual_machine_size      = var.virtual_machine_size
   tags                      = var.tags
 }

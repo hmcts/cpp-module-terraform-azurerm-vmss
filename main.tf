@@ -195,9 +195,12 @@ resource "azurerm_linux_virtual_machine_scale_set" "linux_vmss" {
     }
   }
 
-  automatic_instance_repair {
-    enabled      = var.enable_automatic_instance_repair
-    grace_period = var.grace_period
+  dynamic "automatic_instance_repair" {
+    for_each = var.enable_automatic_instance_repair ? [1] : []
+    content {
+      enabled      = var.enable_automatic_instance_repair
+      grace_period = var.grace_period
+    }
   }
 
   depends_on = [azurerm_lb_rule.lbrule]

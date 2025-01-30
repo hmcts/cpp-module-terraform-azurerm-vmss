@@ -195,9 +195,12 @@ resource "azurerm_linux_virtual_machine_scale_set" "linux_vmss" {
     }
   }
 
-  automatic_instance_repair {
-    enabled      = var.enable_automatic_instance_repair
-    grace_period = var.grace_period
+  dynamic "automatic_instance_repair" {
+    for_each = var.enable_automatic_instance_repair ? [1] : []
+    content {
+      enabled      = var.enable_automatic_instance_repair
+      grace_period = var.grace_period
+    }
   }
 
   depends_on = [azurerm_lb_rule.lbrule]
@@ -281,15 +284,10 @@ resource "azurerm_monitor_diagnostic_setting" "nsg" {
   storage_account_id         = var.storage_account_id
   log_analytics_workspace_id = var.log_analytics_workspace_id
 
-  dynamic "log" {
-    for_each = var.nsg_diag_logs
-    content {
-      category = log.value
-      enabled  = true
-
-      retention_policy {
-        enabled = false
-      }
-    }
+  enabled_log {
+    category = "NetworkSecurityGroupEvent"
+  }
+  enabled_log {
+    category = "NetworkSecurityGroupRuleCounter"
   }
 }

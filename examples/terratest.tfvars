@@ -16,7 +16,8 @@ key_vault_config = {
 vmss_config = {
   name                    = "tftestvmss"
   linux_distribution_name = "ubuntu1804"
-  source_image_id         = "/subscriptions/e6b5053b-4c38-4475-a835-a025aeb3d8c7/resourceGroups/RG-ADO-AMI/providers/Microsoft.Compute/galleries/packer_ado_shareimages/images/Shared_gallery_linux/versions/1.0.0"
+  source_image_id         = "/subscriptions/e6b5053b-4c38-4475-a835-a025aeb3d8c7/resourceGroups/RG-SHARED-AMI/providers/Microsoft.Compute/galleries/packer_shareimages/images/ado_image/versions/1.3.4"
+
 }
 
 tags = {

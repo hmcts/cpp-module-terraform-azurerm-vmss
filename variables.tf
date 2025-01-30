@@ -105,7 +105,7 @@ variable "overprovision" {
 
 variable "virtual_machine_size" {
   description = "The Virtual Machine SKU for the Scale Set, Default is Standard_A2_V2"
-  default     = "Standard_D4s_v3"
+  default     = ""
 }
 
 variable "os_disk_size_gb" {

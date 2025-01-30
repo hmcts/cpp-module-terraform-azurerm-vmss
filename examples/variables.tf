@@ -31,3 +31,13 @@ variable "vmss_config" {
   default     = {}
   description = "VMSS config"
 }
+
+variable "virtual_machine_size" {
+  description = "The Virtual Machine SKU for the Scale Set, Default is Standard_A2_V2"
+  default     = "Standard_D2_v3"
+}
+
+variable "enable_automatic_instance_repair" {
+  description = "Should the automatic instance repair be enabled on this Virtual Machine Scale Set?"
+  default     = false
+}

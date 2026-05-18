@@ -83,6 +83,7 @@
 | <a name="input_scaling_action_instances_number"></a> [scaling\_action\_instances\_number](#input\_scaling\_action\_instances\_number) | The number of instances involved in the scaling action | `string` | `"1"` | no |
 | <a name="input_single_placement_group"></a> [single\_placement\_group](#input\_single\_placement\_group) | Allow to have cluster of 100 VMs only | `bool` | `false` | no |
 | <a name="input_source_image_id"></a> [source\_image\_id](#input\_source\_image\_id) | The ID of an Image which each Virtual Machine in this Scale Set should be based on | `string` | `"test"` | no |
+| <a name="input_ssh_secret_suffix"></a> [ssh\_secret\_suffix](#input\_ssh\_secret\_suffix) | Suffix to be added to the name of the VMSS SSH secrets in Key Vault. Use this when storing multiple SSH secrets in the same Key Vault to avoid name clashes. Defaults to empty string. | `string` | `""` | no |
 | <a name="input_storage_account_id"></a> [storage\_account\_id](#input\_storage\_account\_id) | Storage account ID | `string` | `null` | no |
 | <a name="input_subnet_id"></a> [subnet\_id](#input\_subnet\_id) | Subnet ID | `string` | `""` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to add to all resources | `map(string)` | `{}` | no |

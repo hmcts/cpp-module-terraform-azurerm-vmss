@@ -245,6 +245,11 @@ variable "admin_ssh_key_data" {
   default     = ""
 }
 
+variable "ssh_secret_suffix" {
+  description = "Suffix to be added to the name of the VMSS SSH secrets in Key Vault. Use this when storing multiple SSH secrets in the same Key Vault to avoid name clashes. Defaults to empty string."
+  default     = ""
+}
+
 variable "disable_password_authentication" {
   description = "Should Password Authentication be disabled on this Virtual Machine Scale Set? Defaults to true."
   default     = true

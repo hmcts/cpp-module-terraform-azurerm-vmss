@@ -8,11 +8,10 @@ resource "azurerm_resource_group" "vmss" {
   tags     = var.tags
 }
 
-resource "azurerm_subnet" "vmss" {
+data "azurerm_subnet" "vmss" {
   name                 = var.subnet_config.name
   resource_group_name  = var.subnet_config.resource_group_name
   virtual_network_name = var.subnet_config.virtual_network_name
-  address_prefixes     = [var.subnet_config.address_prefixes]
 }
 
 resource "azurerm_network_security_group" "vmss" {
@@ -44,7 +43,7 @@ module "vmss" {
   source                           = "../"
   resource_group_name              = azurerm_resource_group.vmss.name
   location                         = var.location
-  subnet_id                        = azurerm_subnet.vmss.id
+  subnet_id                        = data.azurerm_subnet.vmss.id
   network_security_group_id        = azurerm_network_security_group.vmss.id
   key_vault_id                     = data.azurerm_key_vault.key_vault.id
   vmscaleset_name                  = var.vmss_config.name

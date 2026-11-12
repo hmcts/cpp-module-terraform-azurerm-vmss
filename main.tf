@@ -280,8 +280,6 @@ resource "azurerm_linux_virtual_machine_scale_set" "linux_vmss_external_capacity
     name                          = lower("nic-${var.vmscaleset_name}")
     primary                       = true
     dns_servers                   = var.dns_servers
-    enable_ip_forwarding          = var.enable_ip_forwarding
-    enable_accelerated_networking = var.enable_accelerated_networking
     network_security_group_id     = var.network_security_group_id
 
     ip_configuration {

@@ -25,17 +25,26 @@ output "load_balancer_rules_id" {
 
 output "linux_virtual_machine_scale_set_name" {
   description = "The name of the Linux Virtual Machine Scale Set."
-  value       = element(concat(azurerm_linux_virtual_machine_scale_set.linux_vmss.*.name, [""]), 0)
+  value = element(concat(
+    azurerm_linux_virtual_machine_scale_set.linux_vmss.*.name,
+    azurerm_linux_virtual_machine_scale_set.linux_vmss_external_capacity.*.name,
+  ), 0)
 }
 
 output "linux_virtual_machine_scale_set_id" {
   description = "The resource ID of the Linux Virtual Machine Scale Set."
-  value       = element(concat(azurerm_linux_virtual_machine_scale_set.linux_vmss.*.id, [""]), 0)
+  value = element(concat(
+    azurerm_linux_virtual_machine_scale_set.linux_vmss.*.id,
+    azurerm_linux_virtual_machine_scale_set.linux_vmss_external_capacity.*.id,
+  ), 0)
 }
 
 output "linux_virtual_machine_scale_set_unique_id" {
   description = "The unique ID of the Linux Virtual Machine Scale Set."
-  value       = element(concat(azurerm_linux_virtual_machine_scale_set.linux_vmss.*.unique_id, [""]), 0)
+  value = element(concat(
+    azurerm_linux_virtual_machine_scale_set.linux_vmss.*.unique_id,
+    azurerm_linux_virtual_machine_scale_set.linux_vmss_external_capacity.*.unique_id,
+  ), 0)
 }
 
 output "load_balancer_public_ip" {

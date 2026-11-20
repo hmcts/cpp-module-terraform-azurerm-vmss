@@ -213,9 +213,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "linux_vmss" {
 }
 
 locals {
-  linux_vmss_id = one(concat(
-    azurerm_linux_virtual_machine_scale_set.linux_vmss.id,
-  ))
+  linux_vmss_id = azurerm_linux_virtual_machine_scale_set.linux_vmss.id
 }
 
 resource "azurerm_monitor_autoscale_setting" "auto" {

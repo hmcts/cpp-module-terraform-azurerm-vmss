@@ -54,6 +54,7 @@
 | <a name="input_generate_admin_ssh_key"></a> [generate\_admin\_ssh\_key](#input\_generate\_admin\_ssh\_key) | Generates a secure private key and encodes it as PEM. | `bool` | `true` | no |
 | <a name="input_grace_period"></a> [grace\_period](#input\_grace\_period) | Amount of time (in minutes, between 30 and 90, defaults to 30 minutes) for which automatic repairs will be delayed. | `string` | `"PT30M"` | no |
 | <a name="input_identity"></a> [identity](#input\_identity) | list of identity | `any` | `{}` | no |
+| <a name="input_ignore_instance_changes"></a> [ignore\_instance\_changes](#input\_ignore\_instance\_changes) | Leave instance count and the ADO elastic-pool timestamp tag under external control after create. instances\_count is still used on first create. | `bool` | `false` | no |
 | <a name="input_instances_count"></a> [instances\_count](#input\_instances\_count) | The number of Virtual Machines in the Scale Set. | `number` | `1` | no |
 | <a name="input_isImageFromMarketPlace"></a> [isImageFromMarketPlace](#input\_isImageFromMarketPlace) | is image from market place. this will include plan block | `bool` | `false` | no |
 | <a name="input_key_vault_id"></a> [key\_vault\_id](#input\_key\_vault\_id) | Azure keyvault ID to write the secrets | `string` | `""` | no |

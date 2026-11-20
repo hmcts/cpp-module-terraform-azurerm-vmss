@@ -111,6 +111,7 @@ resource "azurerm_lb_rule" "lbrule" {
 
 
 resource "azurerm_linux_virtual_machine_scale_set" "linux_vmss" {
+
   name                            = var.vmscaleset_name
   resource_group_name             = var.resource_group_name
   location                        = var.location
@@ -182,8 +183,6 @@ resource "azurerm_linux_virtual_machine_scale_set" "linux_vmss" {
     name                          = lower("nic-${var.vmscaleset_name}")
     primary                       = true
     dns_servers                   = var.dns_servers
-    enable_ip_forwarding          = var.enable_ip_forwarding
-    enable_accelerated_networking = var.enable_accelerated_networking
     network_security_group_id     = var.network_security_group_id
 
     ip_configuration {
@@ -203,7 +202,18 @@ resource "azurerm_linux_virtual_machine_scale_set" "linux_vmss" {
     }
   }
 
+  lifecycle {
+    ignore_changes = [
+      instances,
+      tags["__AzureDevOpsElasticPoolTimeStamp"],
+    ]
+  }
+
   depends_on = [azurerm_lb_rule.lbrule]
+}
+
+locals {
+  linux_vmss_id = azurerm_linux_virtual_machine_scale_set.linux_vmss.id
 }
 
 resource "azurerm_monitor_autoscale_setting" "auto" {
@@ -211,7 +221,7 @@ resource "azurerm_monitor_autoscale_setting" "auto" {
   name                = lower("auto-scale-set-${var.vmscaleset_name}")
   resource_group_name = var.resource_group_name
   location            = var.location
-  target_resource_id  = azurerm_linux_virtual_machine_scale_set.linux_vmss.id
+  target_resource_id  = local.linux_vmss_id
 
   profile {
     name = "default"
@@ -224,7 +234,7 @@ resource "azurerm_monitor_autoscale_setting" "auto" {
     rule {
       metric_trigger {
         metric_name        = "Percentage CPU"
-        metric_resource_id = azurerm_linux_virtual_machine_scale_set.linux_vmss.id
+        metric_resource_id = local.linux_vmss_id
         time_grain         = "PT1M"
         statistic          = "Average"
         time_window        = "PT5M"
@@ -243,7 +253,7 @@ resource "azurerm_monitor_autoscale_setting" "auto" {
     rule {
       metric_trigger {
         metric_name        = "Percentage CPU"
-        metric_resource_id = azurerm_linux_virtual_machine_scale_set.linux_vmss.id
+        metric_resource_id = local.linux_vmss_id
         time_grain         = "PT1M"
         statistic          = "Average"
         time_window        = "PT5M"
@@ -264,16 +274,12 @@ resource "azurerm_monitor_autoscale_setting" "auto" {
 resource "azurerm_monitor_diagnostic_setting" "vmmsdiag" {
   count                      = var.log_analytics_workspace_id != null && var.storage_account_id != null ? 1 : 0
   name                       = lower("${var.vmscaleset_name}-diag")
-  target_resource_id         = azurerm_linux_virtual_machine_scale_set.linux_vmss.id
+  target_resource_id         = local.linux_vmss_id
   storage_account_id         = var.storage_account_id
   log_analytics_workspace_id = var.log_analytics_workspace_id
 
   metric {
     category = "AllMetrics"
-
-    retention_policy {
-      enabled = false
-    }
   }
 }
 

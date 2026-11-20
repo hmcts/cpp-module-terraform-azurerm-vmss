@@ -341,3 +341,9 @@ variable "identity" {
   type        = any
   default     = {}
 }
+
+variable "ignore_instance_changes" {
+  description = "Leave instance count and the ADO elastic-pool timestamp tag under external control after create. instances_count is still used on first create."
+  type        = bool
+  default     = false
+}
